@@ -8,7 +8,7 @@
 #
 # Use Ubuntu container as foundation
 #
-FROM ubuntu:latest
+FROM debian:bookworm
 #
 # Set environment
 #
