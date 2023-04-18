@@ -17,7 +17,7 @@ old_library=''
 inherited_linker_flags=' -pthread'
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/usr/src/extpkgs/lib/aarch64 /opt/hercules/lib/libhercs.la -lrt -lresolv -lnsl -lm -ldl -lbz2 -lz -lcrypto64 -ldecNumber64 -lSoftFloat64 -ltelnet64'
+dependency_libs=' -L../extpkgs/lib/aarch64 /opt/hercules/lib/libhercs.la -lrt -lresolv -lnsl -lm -ldl -lbz2 -lz -lcrypto64 -ldecNumber64 -lSoftFloat64 -ltelnet64'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
