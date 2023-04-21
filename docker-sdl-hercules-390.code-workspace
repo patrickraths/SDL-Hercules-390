@@ -4,5 +4,8 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"docker.commands.run": "${containerCommand} run --cap-add=sys_nice --ulimit rtprio=99 --rm -d ${exposedPorts} ${tag}",
+		"docker.commands.runInteractive": "${containerCommand} run --cap-add=SYS_NICE --ulimit rtprio=99 --cap-add=NET_ADMIN --rm -it ${exposedPorts} ${tag}"
+	}
 }
