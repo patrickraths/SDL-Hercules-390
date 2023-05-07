@@ -41,7 +41,6 @@ RUN git clone https://github.com/SDL-Hercules-390/hyperion.git $SRC/hyperion
 WORKDIR $SRC/hyperion
 RUN ./util/bldlvlck
 RUN ./autogen.sh
-# RUN ./configure --prefix=$TGT --enable-extpkgs=../extpkgs
 RUN ./configure --prefix=$TGT --enable-extpkgs=../extpkgs
 RUN make
 RUN make install
@@ -61,4 +60,4 @@ WORKDIR $TGT
 # # RUN setcap 'cap_sys_nice=eip' $TGT/bin/hercules
 # # RUN setcap 'cap_sys_nice=eip' $TGT/bin/herclin
 # # RUN setcap 'cap_net_admin+ep' $TGT/bin/hercifc
-ENTRYPOINT /bin/bash
+CMD [ "/bin/bash" ]
