@@ -1,17 +1,16 @@
 # ---------------------------------------------------------------------
 # 
-# Description:      Build docker container to compile SDL-Hercujles-390
-# 
-#                   As it is recommended to compile and link using a 
-#                   different user than root, user 'hercules' will be
-#                   created and granted sudo rights on all comands
-#                   without prompting for passwords so that any scripts
-#                   that may require sudo priviledges can run without
-#                   interruption.
+# Description:      Build docker container to compile SDL-Hercules-390
+#                   using the hercules-helper
+#
+#                   This requires to have the actual build being per-
+#                   formed by a user other than root. To his end user
+#                   hercules is being created and granted sudo
+#                   priviledges
 #
 #  Version:         1.0
 #  Created:         17 April 2023
-#  Updated:         17 April 2023 
+#  Updated:         08 May 2023
 #  (c)2023:         Patrick Raths
 #                   
 # ---------------------------------------------------------------------
@@ -28,6 +27,7 @@ RUN apt-get -y install apt-utils git wget time sudo nano
 RUN apt-get -y install build-essential cmake flex gawk m4 autoconf automake libtool-bin libltdl-dev
 #
 # Create new user
+# And assign priviledge to execute any command using sudo without password
 #
 RUN useradd -ms /bin/bash $USR
 RUN echo "# Grant user hercules sudo permission on all commands with no password required" > /etc/sudoers.d/$USR
@@ -47,7 +47,7 @@ RUN ./hyperion-buildall.sh
 FROM ubuntu:lunar AS deployment
 ARG SRC=/home/hercules/hercules-helper/herc4x
 ARG TGT=/opt/hercules
-RUN useradd -ms /bin/bash hercules
+# RUN useradd -ms /bin/bash hercules
 COPY --from=build $SRC $TGT
 # USER hercules:hercules
 ENV PATH $TGT/bin:$TGT/bin/hercules:$PATH
