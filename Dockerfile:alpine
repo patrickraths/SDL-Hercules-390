@@ -47,11 +47,11 @@ RUN make install
 #
 # Stage 2: Deployment
 #
-FROM ubuntu:lunar AS deployment
+FROM alpine:latest AS deployment
 ARG SRC=/opt/hercules
 ARG TGT=/opt/hercules
-RUN apt-get -y update
-RUN apt-get -y install htop nano 
+# RUN apt-get -y update
+# RUN apt-get -y install htop nano 
 # RUN apt-get -y install libcap2-bin
 COPY --from=build $SRC $TGT
 ENV PATH $TGT/bin:$TGT/bin/hercules:$PATH
@@ -60,4 +60,4 @@ WORKDIR $TGT
 # RUN setcap 'cap_sys_nice=eip' $TGT/bin/hercules
 # RUN setcap 'cap_sys_nice=eip' $TGT/bin/herclin
 # RUN setcap 'cap_net_admin+ep' $TGT/bin/hercifc
-CMD [ "/bin/bash" ]
+# CMD [ "/bin/bash" ]
