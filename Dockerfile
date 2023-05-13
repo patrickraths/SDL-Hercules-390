@@ -17,7 +17,7 @@
 #
 # Use Ubuntu container as foundation
 #
-FROM ubuntu:lunar as build
+FROM ubuntu:latest as build
 ARG USR=hercules
 #
 # Add additional packages required to compile Hyperion
@@ -44,7 +44,7 @@ RUN ./hyperion-buildall.sh
 #
 # Stage 2: Deployment
 #
-FROM ubuntu:lunar AS deployment
+FROM ubuntu:latest AS deployment
 ARG SRC=/home/hercules/hercules-helper/herc4x
 ARG TGT=/opt/hercules
 # RUN useradd -ms /bin/bash hercules
