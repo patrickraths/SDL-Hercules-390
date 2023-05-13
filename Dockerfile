@@ -1,19 +1,29 @@
-# ---------------------------------------------------------------------
+# #####################################################################
 # 
-# Description:      Build docker container to compile SDL-Hercules-390
-#
-#  Version:         1.1
-#  Created:         17 April 2023
-#  Updated:         07 May 2023
-#  (c)2023:         Patrick Raths
-#                   
+#  Description: Build docker container to compile SDL-Hercules-390
+# 
+#  Version:     1.1.1
+#  Created:     17 April 2023
+#  Updated:     13 May 2023
+#  (c)2023:     Patrick Raths
 # ---------------------------------------------------------------------
-FROM ubuntu:lunar AS build
+#  1.1.1:       - ARG vales defined prior to build stage for global
+#                 use
+#               - Clone scripts for extpkgs from github
+# ---------------------------------------------------------------------
+#  1.1          Use Multistage build
+# #####################################################################
 #
-# Set source and target directory
+# Set Source and target Directory
 #
 ARG SRC=/usr/src
 ARG TGT=/opt/hercules
+# ---------------------------------------------------------------------
+# Stage 1: Build
+# ---------------------------------------------------------------------
+FROM ubuntu:latest AS build
+ARG SRC
+ARG TGT
 #
 # Add additional packages required to compile Hyperion
 #
@@ -25,13 +35,10 @@ RUN apt-get -y install libbz2-dev zlib1g-dev
 RUN apt-get -y install libcap2-bin
 RUN apt-get -y install libregina3-dev
 #
-# Create installation directories
+# Download and Compile external packages
 #
-RUN mkdir -p $SRC/extpkgs $SRC/hyperion
+RUN git clone https://github.com/SDL-Hercules-390/gists.git $SRC/extpkgs
 COPY ./extpkgs $SRC/extpkgs/
-#
-# Compile external packages
-#
 WORKDIR $SRC/extpkgs
 RUN ./extpkgs.sh clone c d s t
 #
@@ -44,16 +51,15 @@ RUN ./autogen.sh
 RUN ./configure --prefix=$TGT --enable-extpkgs=../extpkgs
 RUN make
 RUN make install
-#
+# ---------------------------------------------------------------------
 # Stage 2: Deployment
-#
-FROM ubuntu:lunar AS deployment
-ARG SRC=/opt/hercules
-ARG TGT=/opt/hercules
+# ---------------------------------------------------------------------
+FROM ubuntu:latest AS deployment
+ARG TGT
 RUN apt-get -y update
 RUN apt-get -y install htop nano 
 # RUN apt-get -y install libcap2-bin
-COPY --from=build $SRC $TGT
+COPY --from=build $TGT $TGT
 ENV PATH $TGT/bin:$TGT/bin/hercules:$PATH
 ENV LD_LIBRARY_PATH $TGT/lib:$LD_LIBRARY_PATH
 WORKDIR $TGT

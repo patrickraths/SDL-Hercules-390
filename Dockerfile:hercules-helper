@@ -53,8 +53,3 @@ COPY --from=build $SRC $TGT
 ENV PATH $TGT/bin:$TGT/bin/hercules:$PATH
 ENV LD_LIBRARY_PATH $TGT/lib:$LD_LIBRARY_PATH
 ENTRYPOINT /bin/bash
-
-
-
-
-
