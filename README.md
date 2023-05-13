@@ -1,5 +1,6 @@
 # Dockerized SDL-Hercules-390
-Build docker container with SDL Hercules 390
+Build docker container with SDL Hercules 390 for ARM64
+
 ## SDL-Hercules-390
 ...
 
