@@ -1,24 +1,33 @@
-# ---------------------------------------------------------------------
-# 
-# Description:      Build docker container to compile SDL-Hercules-390
-#                   using the hercules-helper
+# #####################################################################
+# Project:      SDL-Hercules-390 (Development Branch)
+# Version       1.0
+# Created:      17 April 2023
+# Updated:      08 May 2023
+# (c)2023:      Patrick Raths  
+#    
+# Description:  Build docker container to compile SDL-Hercules-390
+#               using the hercules-helper
 #
-#                   This requires to have the actual build being per-
-#                   formed by a user other than root. To his end user
-#                   hercules is being created and granted sudo
-#                   priviledges
+#               This requires to have the actual build being performed
+#               by a user other than root. To his end, user hercules
+#               is created and granted sudo priviledges
 #
-#  Version:         1.0
-#  Created:         17 April 2023
-#  Updated:         08 May 2023
-#  (c)2023:         Patrick Raths
-#                   
 # ---------------------------------------------------------------------
+# Changelog
+# Version       Description
+# ---------------------------------------------------------------------
+#
+# #####################################################################
+#
+# Set Source and target Directory
+#
+ARG TGT=/opt/hercules
+ARG USR=hercules
 #
 # Use Ubuntu container as foundation
 #
 FROM ubuntu:latest as build
-ARG USR=hercules
+ARG USR
 #
 # Add additional packages required to compile Hyperion
 #
@@ -39,14 +48,15 @@ RUN mkdir -p /home/$USR/hercules-helper /home/$USR/herctest
 RUN git clone https://github.com/wrljet/hercules-helper.git /home/$USR/hercules-helper
 RUN chown -R hercules:hercules /home/$USR/hercules-helper /home/$USR/herctest
 WORKDIR /home/$USR/hercules-helper
-USER hercules:hercules
+USER $USR:$USR
 RUN ./hyperion-buildall.sh
 #
 # Stage 2: Deployment
 #
 FROM ubuntu:latest AS deployment
-ARG SRC=/home/hercules/hercules-helper/herc4x
-ARG TGT=/opt/hercules
+ARG TGT
+ARG USR
+ARG SRC=/home/$USR/hercules-helper/herc4x
 # RUN useradd -ms /bin/bash hercules
 COPY --from=build $SRC $TGT
 # USER hercules:hercules
