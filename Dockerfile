@@ -1,17 +1,21 @@
 # #####################################################################
-# 
-#  Description: Build docker container to compile SDL-Hercules-390
-# 
-#  Version:     1.1.1
-#  Created:     17 April 2023
-#  Updated:     13 May 2023
-#  (c)2023:     Patrick Raths
+# Project:      SDL-Hercules-390
+# Version:      1.1.1
+# Created:      17 April 2023
+# Updated:      13 May 2023
+# (c)2023:      Patrick Raths
+#
+# Description:  Build docker container to compile SDL-Hercules-390
+#
 # ---------------------------------------------------------------------
-#  1.1.1:       - ARG vales defined prior to build stage for global
+# Changelog
+# Version       Description
+# ---------------------------------------------------------------------
+# 1.1.1:        - ARG vales defined prior to build stage for global
 #                 use
 #               - Clone scripts for extpkgs from github
 # ---------------------------------------------------------------------
-#  1.1          Use Multistage build
+# 1.1           Use Multistage build
 # #####################################################################
 #
 # Set Source and target Directory
