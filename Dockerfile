@@ -33,8 +33,7 @@ ARG TGT
 #
 RUN apt-get -y update
 RUN apt-get -y install apt-utils git wget time sudo nano
-RUN apt-get -y install build-essential cmake flex gawk m4 autoconf automake libtool-bin 
-RUN apt-get -y install libltdl-dev
+RUN apt-get -y install build-essential cmake flex gawk m4 autoconf automake libtool-bin libltdl-dev
 RUN apt-get -y install libbz2-dev zlib1g-dev
 RUN apt-get -y install libcap2-bin
 RUN apt-get -y install libregina3-dev
@@ -54,20 +53,20 @@ RUN ./util/bldlvlck
 RUN ./autogen.sh
 RUN ./configure --prefix=$TGT --enable-extpkgs=../extpkgs
 RUN make
-RUN make install
+RUN sudo make install
 # ---------------------------------------------------------------------
 # Stage 2: Deployment
 # ---------------------------------------------------------------------
 FROM ubuntu:latest AS deployment
 ARG TGT
 RUN apt-get -y update
-RUN apt-get -y install htop nano 
-# RUN apt-get -y install libcap2-bin
+RUN apt-get -y install htop time sudo nano
+RUN apt-get -y install libcap2-bin
 COPY --from=build $TGT $TGT
 ENV PATH $TGT/bin:$TGT/bin/hercules:$PATH
 ENV LD_LIBRARY_PATH $TGT/lib:$LD_LIBRARY_PATH
 WORKDIR $TGT
-# RUN setcap 'cap_sys_nice=eip' $TGT/bin/hercules
-# RUN setcap 'cap_sys_nice=eip' $TGT/bin/herclin
-# RUN setcap 'cap_net_admin+ep' $TGT/bin/hercifc
-CMD [ "/bin/bash" ]
+RUN sudo setcap 'cap_sys_nice=eip' $TGT/bin/hercules
+RUN sudo setcap 'cap_sys_nice=eip' $TGT/bin/herclin
+RUN sudo setcap 'cap_net_admin+ep' $TGT/bin/hercifc
+# CMD [ "/bin/bash" ]
